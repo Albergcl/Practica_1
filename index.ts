@@ -43,3 +43,54 @@ const peliculasDePrueba = [
 ];
 
 console.log(agruparPeliculasPorGenero(peliculasDePrueba)); // Resultado -> { '28': [ 'Película A', 'Película C' ], '35': [ 'Película A' ], '10749': [ 'Película B' ] }
+
+/* EJERCICIO 3 ->
+    Escribe una función asíncrona llamada obtenerTitulosDePosts que realice las siguientes acciones:
+
+    1. Utiliza fetch para obtener los datos de la siguiente URL: https://jsonplaceholder.typicode.com/posts.
+    2. Maneja posibles errores durante la petición utilizando bloques try...catch.
+    3. Extrae el título (title) de cada post en el array resultante.
+    4. Devuelve un array con los títulos extraídos.
+*/
+
+const obtenerTitulosDePosts = async (): Promise<string[]> => {
+    const url = 'https://jsonplaceholder.typicode.com/posts';
+
+    try {
+        const response = await fetch(url);
+
+        if (!response) {
+            console.log("Error en la petición.");
+        }
+
+        const data = await response.json();
+        const titulos = data.map((elem: { title: string }) => {
+            return elem.title;
+        });
+        return titulos;
+    } catch (error) {
+        console.log("Error al obtener los posts: ", error);
+        throw error;
+    }
+}
+ 
+// Ejemplo de uso:
+obtenerTitulosDePosts()
+  .then(titulos => {
+    console.log(`Títulos de los posts: ${titulos}`);
+  })
+  .catch(error => {
+    console.error(`Error al obtener los títulos: ${error}`);
+  });
+ 
+// Ejemplo con async/await (opcional, para practicar):
+async function ejecutarObtenerTitulos() {
+  try {
+    const titulos = await obtenerTitulosDePosts();
+    console.log(`Títulos de los posts (con async/await): ${titulos}`);
+  } catch (error) {
+    console.error(`Error al obtener los títulos (con async/await): ${error}`);
+  }
+}
+ 
+ejecutarObtenerTitulos();
